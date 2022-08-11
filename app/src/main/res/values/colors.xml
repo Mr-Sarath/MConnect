@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2566ED</color>
+    <color name="colorPrimaryDark">#2566ED</color>
+    <color name="colorAccent">#2566ED</color>
+
+
+    <color name="rippleColor">#1ADF1E26</color>
+    <color name="showcase_mask">#000</color>
+    <color name="skyBlue">#5AC8FA</color>
+    <color name="darkBlue">#5856D6</color>
+    <color name="fontBlackColor">#1E2432</color>
+    <color name="grayColor">#59000000</color>
+    <color name="grayColor2">#c1c0c9</color>
+    <color name="darkGray">#696969</color>
+    <color name="duskYellow">#ffc107</color>
+    <color name="lightGrey">#DCDCDC</color>
+    <color name="shimmerGrey">#c7c7c7</color>
+
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.MainActivity">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#1E5A8A"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineH"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/largeTextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/boogaloo"
+                    android:text="M Connect"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:id="@+id/iv_qr"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginEnd="@dimen/_30sdp"
+                    android:padding="@dimen/_8sdp"
+                    android:src="@drawable/qr"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.35" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_computer"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:maxHeight="@dimen/_105sdp"
+                app:cardCornerRadius="@dimen/_10sdp"
+                app:cardElevation="@dimen/_20sdp"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineH"
+                app:layout_constraintEnd_toStartOf="@+id/cv_keyboard"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guidelineH">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/iv_computer"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:src="@drawable/computer"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_computer"
+                        style="@style/smallTextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:text="Computer"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/iv_computer"
+                        app:layout_constraintStart_toStartOf="@+id/iv_computer"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_computer" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_keyboard"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:maxHeight="@dimen/_105sdp"
+                app:cardCornerRadius="@dimen/_10sdp"
+                app:cardElevation="@dimen/_20sdp"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineH"
+                app:layout_constraintEnd_toStartOf="@+id/cv_mouse"
+                app:layout_constraintStart_toEndOf="@+id/cv_computer"
+                app:layout_constraintTop_toTopOf="@+id/guidelineH">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/iv_keyboard"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:src="@drawable/keyboard"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_keyboard"
+                        style="@style/smallTextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:text="Keyboartd"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/iv_keyboard"
+                        app:layout_constraintStart_toStartOf="@+id/iv_keyboard"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_keyboard" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_mouse"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:maxHeight="@dimen/_105sdp"
+                app:cardCornerRadius="@dimen/_10sdp"
+                app:cardElevation="@dimen/_20sdp"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineH"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cv_keyboard"
+                app:layout_constraintTop_toTopOf="@+id/guidelineH">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/iv_mouse"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:src="@drawable/mouse"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_mouse"
+                        style="@style/smallTextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:text="Mouse"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/iv_mouse"
+                        app:layout_constraintStart_toStartOf="@+id/iv_mouse"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_mouse" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <!--
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/iv_user"
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:src="@drawable/user"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:shapeAppearance="@style/roundedImageView" />
+            -->
+
+            <!--      <com.google.android.material.card.MaterialCardView
+                      android:id="@+id/cv_search"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginHorizontal="@dimen/_20sdp"
+                      android:layout_marginTop="@dimen/_20sdp"
+                      app:cardElevation="@dimen/_8sdp"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toBottomOf="@+id/iv_user">
+
+                      <androidx.constraintlayout.widget.ConstraintLayout
+                          android:layout_width="match_parent"
+                          android:layout_height="match_parent"
+                          android:paddingVertical="@dimen/_10sdp">
+
+                          <ImageView
+                              android:id="@+id/iv_search"
+                              android:layout_width="@dimen/_25sdp"
+                              android:layout_height="@dimen/_20sdp"
+                              android:layout_marginEnd="@dimen/_10sdp"
+                               android:layout_marginStart="@dimen/_10sdp"
+                              app:srcCompat="@drawable/ic_search"
+                              app:layout_constraintStart_toStartOf="parent"
+                              app:layout_constraintTop_toTopOf="parent" />
+
+                          <EditText
+                              android:layout_width="0dp"
+                              android:layout_height="wrap_content"
+                              app:layout_constraintStart_toEndOf="@+id/iv_search"
+                              app:layout_constraintTop_toTopOf="@+id/iv_search"
+                              app:layout_constraintBottom_toBottomOf="@+id/iv_search"
+                              app:layout_constraintEnd_toEndOf="parent"
+                              android:background="@android:color/transparent"
+                              android:hint="search"
+                              android:layout_marginStart="@dimen/_5sdp" />
+
+                      </androidx.constraintlayout.widget.ConstraintLayout>
+                  </com.google.android.material.card.MaterialCardView>
+      -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleV"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/_100sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cv_keyboard" />
+
+            <ImageView
+                android:id="@+id/btn_add"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:src="@drawable/add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressW"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
