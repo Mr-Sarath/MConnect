@@ -2,13 +2,14 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardview"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/_120sdp"
+    android:layout_height="@dimen/_150sdp"
     android:layout_marginHorizontal="@dimen/_5sdp"
     android:layout_marginTop="@dimen/_15sdp"
     android:minHeight="@dimen/_50sdp"
     app:cardCornerRadius="@dimen/_10sdp"
     app:cardElevation="@dimen/_5sdp"
+    android:layout_marginStart="@dimen/_10sdp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
@@ -19,37 +20,38 @@
         android:paddingVertical="@dimen/_20sdp"
         android:paddingBottom="@dimen/_8sdp">
 
-      <!--  <ImageView
-            android:id="@+id/iv_more"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_30sdp"
+        <ImageView
+            android:id="@+id/iv_keyboard"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
             android:padding="@dimen/_5sdp"
-            android:src="@drawable/more"
-            android:layout_marginEnd="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />-->
-
-
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/largeTextBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:text="Ajin Krishna"
-            android:textAllCaps="true"
-            android:textColor="@color/black"
+            android:src="@drawable/keyboard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
-            android:id="@+id/tv_dip"
+            android:id="@+id/tv_title"
+            style="@style/normalTextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:text="Ajin Krishna"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_keyboard" />
+
+        <TextView
+            android:id="@+id/tv_serial"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:gravity="center"
-            android:text="Android Developer"
+            android:text="Dell"
             android:textAllCaps="true"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"

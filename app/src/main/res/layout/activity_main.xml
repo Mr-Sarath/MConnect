@@ -275,15 +275,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cv_keyboard" />
 
-            <ImageView
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_add"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@drawable/plus"
                 android:layout_marginEnd="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                android:src="@drawable/add"
+                android:layout_margin="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
 
             <ProgressBar
                 android:id="@+id/progressW"
