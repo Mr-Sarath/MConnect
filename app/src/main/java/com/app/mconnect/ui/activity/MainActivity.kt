@@ -15,6 +15,8 @@ import com.app.mconnect.databinding.ActivityMainBinding
 import com.app.mconnect.mynetwork.EmployeeResponse
 import com.app.mconnect.mynetwork.FirebaseUtils
 import com.app.mconnect.ui.adapter.HomeAdapter
+import com.app.mconnect.utils.hide
+import com.app.mconnect.utils.logThis
 import com.google.android.material.snackbar.Snackbar
 import com.tapadoo.alerter.Alerter
 
@@ -35,8 +37,9 @@ class MainActivity : AppCompatActivity(), HomeAdapter.ClickListener {
             value?.let {
                 userList.addAll(it.toObjects(EmployeeResponse::class.java) as List<EmployeeResponse>)
                 setData(userList)
-
-                binding?.progressW?.visibility = View.GONE
+/*
+                 binding?.progressW?.hide()
+*/
             }
 
             /*
