@@ -43,6 +43,11 @@ class MouseActivity : AppCompatActivity() {
         binding_?.recycleV?.layoutManager =
             GridLayoutManager(this, 2)
         setData(userList)
+
+        binding_?.ivBack?.setOnClickListener {
+            onBackPressed()
+        }
+
     }
 
     private fun setData(user: List<EmployeeResponse>) {

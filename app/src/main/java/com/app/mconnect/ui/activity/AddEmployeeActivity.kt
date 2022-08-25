@@ -17,9 +17,12 @@ import com.app.mconnect.databinding.ActivityAddEmployeeBinding
 import com.app.mconnect.mynetwork.*
 import com.app.mconnect.utils.logThis
 import com.app.mconnect.utils.shortToast
+import com.app.mconnect.utils.showAlert
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageTask
+import com.google.firebase.storage.UploadTask
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
@@ -53,6 +56,7 @@ class AddEmployeeActivity : AppCompatActivity() {
         }
         binding?.btnSave?.setOnClickListener {
             validation()
+
 
         }
 
@@ -106,54 +110,45 @@ class AddEmployeeActivity : AppCompatActivity() {
 
                                                             } else showAlert(
                                                                 "Employee",
-                                                                "please enter your Storage",
                                                                 "please enter your Storage"
                                                             )
                                                         } else showAlert(
                                                             "Employee",
-                                                            "Please enter RAM",
                                                             "Please enter RAM"
                                                         )
                                                     } else showAlert(
                                                         "Employee",
                                                         "Please accept the Terms of Use",
-                                                        "Please accept the Terms of Use"
                                                     )
                                                 } else showAlert(
                                                     "Employee",
                                                     "Enter mouse serial Number",
-                                                    "Enter mouse serial Number"
                                                 )
                                             } else showAlert(
                                                 "Employee",
                                                 "Enter mouse Name",
-                                                "Enter mouse Name"
                                             )
                                         } else showAlert(
                                             "Employee",
                                             "Enter Keyboard serial Number",
-                                            "Enter Keyboard serial Number"
                                         )
                                     } else showAlert(
                                         "Employee",
-                                        "Enter Keyboard Name",
                                         "Enter Keyboard Name"
                                     )
                                 } else showAlert(
                                     "Employee",
-                                    "Enter Monitor serial Number",
                                     "Enter Monitor serial Number"
                                 )
-                            } else showAlert("Employee", "Enter Monitor Name", "Enter Monitor Name")
+                            } else showAlert("Employee", "Enter Monitor Name")
                         } else showAlert(
                             "Employee",
-                            "Invalid Email Address",
                             "Invalid Email Address"
                         )
-                    } else showAlert("Employee", "Invalid Phone Number !", "Invalid Phone Number !")
-                } else showAlert("Employee", "Please Enter your Dip ", "Please Enter your Dip ")
-            } else showAlert("Employee", "Please type your Name", "Please type your Name")
-        } else showAlert("Employee", "Enter your ID", "Enter your ID")
+                    } else showAlert("Employee", "Invalid Phone Number !")
+                } else showAlert("Employee", "Please Enter your Dip ")
+            } else showAlert("Employee", "Please type your Name")
+        } else showAlert("Employee", "Enter your ID")
         return false
     }
 
@@ -172,7 +167,7 @@ class AddEmployeeActivity : AppCompatActivity() {
         ram: String,
         storage: String
     ) {
-
+        binding?.progressW?.visibility = View.VISIBLE
         val data = EmployeeDataModel(
             id = id,
             name = name,
@@ -192,36 +187,48 @@ class AddEmployeeActivity : AppCompatActivity() {
         val jsonString = gson.toJson(data)
         val qrUri = qrGenerator(jsonString)
 
-        uploadImage("$id-$name-$dip", qrUri).addOnSuccessListener { downloadUri ->
-            val dataWithQr = EmployeeDataModel(
-                id = id,
-                name = name,
-                dip = dip,
-                email = email,
-                monitorName = monitorName,
-                monitorSerialNo = monitorSerialNo,
-                keyboardName = keyboardName,
-                keyboardSerialNo = keyboardSerialNo,
-                mouseName = mouseName,
-                mouseSerialNo = mouseSerialNo,
-                processor = processor,
-                ram = ram,
-                storage = storage,
-                qrUri = downloadUri.toString()
-            )
+        uploadImage("$id-$name-$dip", qrUri).addOnSuccessListener {
+            it.storage.downloadUrl.addOnSuccessListener { downloadUri ->
 
-            FirebaseUtils().fireStoreDatabase.collection("Users")
-                .add(dataWithQr)
-                .addOnSuccessListener {
-                    binding?.etId?.text?.clear()
-                    shortToast("uploaded")
-                    onBackPressed()
-                }
-                .addOnFailureListener {
-                    shortToast("Failed")
-                }
+                val dataWithQr = EmployeeDataModel(
+                    id = id,
+                    name = name,
+                    dip = dip,
+                    email = email,
+                    monitorName = monitorName,
+                    monitorSerialNo = monitorSerialNo,
+                    keyboardName = keyboardName,
+                    keyboardSerialNo = keyboardSerialNo,
+                    mouseName = mouseName,
+                    mouseSerialNo = mouseSerialNo,
+                    processor = processor,
+                    ram = ram,
+                    storage = storage,
+                    qrUri = downloadUri.toString()
+                )
+
+                FirebaseUtils().fireStoreDatabase.collection("Users").add(dataWithQr)
+                    .addOnSuccessListener {
+                        binding?.etId?.text?.clear()
+                        shortToast("uploaded")
+                        onBackPressed()
+                    }
+                    .addOnFailureListener { e ->
+                        shortToast("Failed to upload data")
+                        logThis(e)
+                        binding?.progressW?.visibility = View.GONE
+
+                    }
+            }.addOnFailureListener { downloadError ->
+                logThis(downloadError)
+                binding?.progressW?.visibility = View.GONE
+
+            }
         }.addOnFailureListener {
+            shortToast("Image Upload Failed")
             logThis(it)
+            binding?.progressW?.visibility = View.GONE
+
         }
     }
 
@@ -288,30 +295,10 @@ class AddEmployeeActivity : AppCompatActivity() {
         img.setImageBitmap(bmp)*/
     }
 
-    private fun uploadImage(imageName: String, imageFileUri: Uri): Task<Uri> {
+    private fun uploadImage(imageName: String, imageFileUri: Uri): UploadTask {
         val mStorageRef = FirebaseStorage.getInstance().reference
-        val uploadTask = mStorageRef.child("SHINJITH/$imageName").putFile(imageFileUri)
-        uploadTask.addOnSuccessListener {
-            shortToast("image uploaded")
-        }.addOnFailureListener {
-            shortToast("image uploaded failed")
-        }
-        return mStorageRef.child("SHINJITH").child(imageName).downloadUrl
+        return mStorageRef.child("SHINJITH/$imageName").putFile(imageFileUri)
+
     }
 
-    private fun showAlert(title: String, msg: String, clickMsg: String) {
-        Alerter.create(this@AddEmployeeActivity)
-            .setTitle(title)
-            .setText(msg)
-            .setDuration(1000)
-            .setBackgroundColorRes(R.color.skyBlue)
-            .setOnClickListener(View.OnClickListener {
-                Toast.makeText(
-                    this@AddEmployeeActivity,
-                    clickMsg,
-                    Toast.LENGTH_SHORT
-                ).show();
-            })
-            .show()
-    }
 }

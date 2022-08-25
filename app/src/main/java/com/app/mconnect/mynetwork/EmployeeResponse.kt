@@ -43,9 +43,13 @@ data class EmployeeResponse(
 	val email: String? = null,
 
 	@field:SerializedName("ram")
-	val ram: String? = null
+	val ram: String? = null,
+
+	@field:SerializedName("qrUri")
+	val qrUri: String? = null
 ) : Parcelable {
 	constructor(parcel: Parcel) : this(
+		parcel.readString(),
 		parcel.readString(),
 		parcel.readString(),
 		parcel.readString(),
@@ -76,6 +80,7 @@ data class EmployeeResponse(
 		parcel.writeString(id)
 		parcel.writeString(email)
 		parcel.writeString(ram)
+		parcel.writeString(qrUri)
 	}
 
 	override fun describeContents(): Int {

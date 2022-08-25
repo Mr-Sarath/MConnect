@@ -2,8 +2,6 @@ package com.app.mconnect.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.mconnect.R
@@ -13,7 +11,6 @@ import com.app.mconnect.mynetwork.FirebaseUtils
 import com.app.mconnect.ui.adapter.HomeAdapter
 import com.app.mconnect.ui.fragment.QrBottomSheet
 import com.app.mconnect.utils.shortToast
-import com.tapadoo.alerter.Alerter
 import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanCustomCode
 import io.github.g00fy2.quickie.config.ScannerConfig

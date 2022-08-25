@@ -1,8 +1,11 @@
 package com.app.mconnect.ui.adapter
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.request.CachePolicy
 import com.app.mconnect.databinding.ItemHomeBinding
 import com.app.mconnect.mynetwork.EmployeeResponse
 import com.app.mconnect.ui.model.HomeData
@@ -28,6 +31,9 @@ class HomeAdapter(
         with(itemList[position]) {
             holder.binding.tvTitle.text = name
             holder.binding.tvDip.text = dip
+            holder.binding.ivQr.load(qrUri){
+                diskCachePolicy(CachePolicy.ENABLED)
+            }
 
             holder.itemView.setOnClickListener {
                 listener.onClick(itemList[position])

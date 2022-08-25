@@ -2,6 +2,7 @@ package com.app.mconnect.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import coil.load
 import com.app.mconnect.databinding.ActivityEmployeeDataBinding
 import com.app.mconnect.mynetwork.EmployeeResponse
 import com.app.mconnect.mynetwork.FirebaseUtils
@@ -38,6 +39,8 @@ class EmployeeDataActivity : AppCompatActivity() {
                 binding?.tvProcessor?.text=processor
                 binding?.tvRam?.text=ram
                 binding?.tvStorage?.text=storage
+                binding?.ivQr?.load(qrUri)
+
 
             }
         }
