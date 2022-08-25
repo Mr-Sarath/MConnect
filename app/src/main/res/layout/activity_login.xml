@@ -76,7 +76,6 @@
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:text="User@gmail.com"
                 app:layout_constraintBottom_toBottomOf="@+id/view_email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view_email"
@@ -132,7 +131,6 @@
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:text="123456789"
                 app:layout_constraintBottom_toBottomOf="@+id/view_password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view_password"
@@ -147,8 +145,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_20sdp"
-        android:padding="@dimen/_12sdp"
         android:backgroundTint="#00BCD4"
+        android:padding="@dimen/_12sdp"
         android:text="login"
         android:textColor="@color/white"
         app:cornerRadius="@dimen/_8sdp"
@@ -158,12 +156,12 @@
         app:layout_constraintTop_toBottomOf="@+id/card_password" />
 
     <TextView
+        style="@style/smallTextMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register now"
-        style="@style/smallTextMedium"
-        android:padding="@dimen/_3sdp"
         android:layout_marginTop="@dimen/_15sdp"
+        android:padding="@dimen/_3sdp"
+        android:text="Register now"
         app:layout_constraintEnd_toEndOf="@+id/btLogin"
         app:layout_constraintTop_toBottomOf="@+id/btLogin" />
 

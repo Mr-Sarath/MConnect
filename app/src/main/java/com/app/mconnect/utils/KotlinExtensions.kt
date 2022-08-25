@@ -1,6 +1,7 @@
 package com.app.mconnect.utils
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.net.ConnectivityManager
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.app.mconnect.R
 import com.google.android.material.snackbar.Snackbar
+import com.tapadoo.alerter.Alerter
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -59,24 +61,24 @@ fun View.shortToast(message: String?) {
 }
 
 fun logThis(message: Any?, caller: String = getCaller(), TAG: String = "logThis") {
-         // println("$TAG -------*--------> $message")
-        val traceEnabled = false //set to false to disable trace and vice versa
-        if (traceEnabled) {
-            Log.d(TAG, "$caller-->$message")
-        } else {
-            Log.d(TAG, "---->  $message")
-        }
+    // println("$TAG -------*--------> $message")
+    val traceEnabled = false //set to false to disable trace and vice versa
+    if (traceEnabled) {
+        Log.d(TAG, "$caller-->$message")
+    } else {
+        Log.d(TAG, "---->  $message")
+    }
 
 }
 
 fun Any?.toLog(TAG: String = "logThis", caller: String = getCaller()) {
-         // println("$TAG -------*--------> $message")
-        val traceEnabled = false
-        if (traceEnabled) {
-            Log.d(TAG, "$caller-->  $this")
-        } else {
-            Log.d(TAG, "---->  $this")
-        }
+    // println("$TAG -------*--------> $message")
+    val traceEnabled = false
+    if (traceEnabled) {
+        Log.d(TAG, "$caller-->  $this")
+    } else {
+        Log.d(TAG, "---->  $this")
+    }
 
 }
 
@@ -168,6 +170,23 @@ inline fun View.errorSnackAction(
     snack.setActionTextColor(Color.parseColor("#FFFFFF"))
     snack.view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
     snack.show()
+}
+
+fun Activity.showAlert(title: String, msg: String, duration: Long = 1000) {
+    Alerter.create(this)
+        .setTitle(title)
+        .setText(msg)
+        .setDuration(duration)
+        .setBackgroundColorRes(R.color.skyBlue)
+        .setOnClickListener {
+            Toast.makeText(
+                this,
+                msg,
+                Toast.LENGTH_SHORT
+            ).show();
+        }
+        .show()
+
 }
 
 private const val STACK_TRACE_LEVELS_UP = 5

@@ -13,6 +13,7 @@ data class EmployeeDataModel(
     val name: String,
     val id: String,
     val email: String,
-    val ram: String
+    val ram: String,
+    val qrUri:String=""
 )
 

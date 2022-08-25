@@ -1,29 +1,29 @@
 package com.app.mconnect.ui.activity
 
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.app.mconnect.R
 import com.app.mconnect.databinding.ActivityMainBinding
 import com.app.mconnect.mynetwork.EmployeeResponse
 import com.app.mconnect.mynetwork.FirebaseUtils
 import com.app.mconnect.ui.adapter.HomeAdapter
-import com.app.mconnect.utils.hide
-import com.app.mconnect.utils.logThis
-import com.google.android.material.snackbar.Snackbar
+import com.app.mconnect.ui.fragment.QrBottomSheet
+import com.app.mconnect.utils.shortToast
 import com.tapadoo.alerter.Alerter
+import io.github.g00fy2.quickie.QRResult
+import io.github.g00fy2.quickie.ScanCustomCode
+import io.github.g00fy2.quickie.config.ScannerConfig
 
 class MainActivity : AppCompatActivity(), HomeAdapter.ClickListener {
     private var binding: ActivityMainBinding? = null
     private var homeAdapter: HomeAdapter? = null
-    var userList = mutableListOf<EmployeeResponse>()
+    private var qrBottomSheet:QrBottomSheet?=null
+
+    private val scanCustomCode = registerForActivityResult(ScanCustomCode(), ::handleResult)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,34 +35,27 @@ class MainActivity : AppCompatActivity(), HomeAdapter.ClickListener {
     private fun init() {
         FirebaseUtils().fireStoreDatabase.collection("Users").addSnapshotListener { value, error ->
             value?.let {
-                userList.addAll(it.toObjects(EmployeeResponse::class.java) as List<EmployeeResponse>)
-                setData(userList)
+                val data = it.toObjects(EmployeeResponse::class.java) as List<EmployeeResponse>
+                setData(data)
 /*
                  binding?.progressW?.hide()
 */
             }
 
-            /*
-                logThis("monitor name   " + user[0].monitorName)
-    */
+
         }
 
         handleEvents()
     }
 
     private fun handleEvents() {
-        /*
-        binding?.recycleV?.layoutManager =StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.HORIZONTAL)
-*/
+
         binding?.recycleV?.layoutManager =
             LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
 
         binding?.btnAdd?.setOnClickListener {
             val i = Intent(this@MainActivity, AddEmployeeActivity::class.java)
             startActivity(i)
-        }
-        binding?.ivQr?.setOnClickListener {
-            showAlert("QR", "On Progress", "Qr code on progress")
         }
 
         binding?.cvKeyboard?.setOnClickListener {
@@ -79,14 +72,36 @@ class MainActivity : AppCompatActivity(), HomeAdapter.ClickListener {
             val i = Intent(this@MainActivity, MouseActivity::class.java)
             startActivity(i)
         }
+        binding?.ivBack?.setOnClickListener {
+            onBackPressed()
+        }
+        binding?.ivQr?.setOnClickListener {
 
+            scanCustomCode.launch(
+                ScannerConfig.build {
+                    //setBarcodeFormats(listOf(BarcodeFormat.FORMAT_CODE_128)) // set interested barcode formats
+                    setOverlayStringRes(R.string.scan_barcode) // string resource used for the scanner overlay
+                    setOverlayDrawableRes(R.drawable.ic_scan_bar_code) // drawable resource used for the scanner overlay
+                    setHapticSuccessFeedback(true) // enable (default) or disable haptic feedback when a barcode was detected
+                    setShowTorchToggle(true) // show or hide (default) torch/flashlight toggle button
+                    setHorizontalFrameRatio(0f) // set the horizontal overlay ratio (default is 1 / square frame)
 
+                }
+            )
+
+        }
+      /*  binding?.ivQr1?.setOnClickListener {
+
+            QrBottomSheet().show(supportFragmentManager, "qrBottomSheet")
+        }*/
     }
 
     private fun setData(user: List<EmployeeResponse>) {
         homeAdapter = HomeAdapter(user, this)
         binding?.recycleV?.adapter = homeAdapter
+/*
         itemClear()
+*/
     }
 
     override fun onClick(employeeResponse: EmployeeResponse) {
@@ -95,23 +110,8 @@ class MainActivity : AppCompatActivity(), HomeAdapter.ClickListener {
         startActivity(i)
     }
 
-    private fun showAlert(title: String, msg: String, clickMsg: String) {
-        Alerter.create(this@MainActivity)
-            .setTitle(title)
-            .setText(msg)
-            .setDuration(1000)
-            .setBackgroundColorRes(R.color.skyBlue)
-            .setOnClickListener(View.OnClickListener {
-                Toast.makeText(
-                    this@MainActivity,
-                    clickMsg,
-                    Toast.LENGTH_SHORT
-                ).show();
-            })
-            .show()
 
-    }
-
+    /*
     private fun itemClear() {
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
@@ -123,7 +123,6 @@ class MainActivity : AppCompatActivity(), HomeAdapter.ClickListener {
                 // when the item is moved.
                 return false
             }
-
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // this method is called when we swipe our item to right direction.
                 // on below line we are getting the item at a particular position.
@@ -157,10 +156,45 @@ class MainActivity : AppCompatActivity(), HomeAdapter.ClickListener {
                             homeAdapter?.notifyItemInserted(deletePos)
                         }).show()
             }
-
             // at last we are adding this
             // to our recycler view.
         }).attachToRecyclerView(binding?.recycleV)
 
     }
+*/
+
+
+
+    private var back_pressed = 0L
+    override fun onBackPressed() {
+        if (back_pressed + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed()
+            finishAffinity()
+        } else {
+            shortToast("Press Again to Exit from  App")
+        }
+        back_pressed = System.currentTimeMillis()
+    }
+
+
+    private fun handleResult(result: QRResult) {
+        when (result) {
+            is QRResult.QRSuccess -> {
+                shortToast(result.content.rawValue)
+            }
+            is QRResult.QRError -> {
+                shortToast(result.exception.message)
+            }
+            is QRResult.QRMissingPermission -> {
+                shortToast("User has permitted")
+
+            }
+            is QRResult.QRUserCanceled -> {
+                shortToast("User has cancelled")
+
+            }
+        }
+    }
+
 }
+

@@ -1,20 +1,34 @@
 package com.app.mconnect.ui.activity
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.ContentValues
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.app.mconnect.R
 import com.app.mconnect.databinding.ActivityAddEmployeeBinding
-import com.app.mconnect.mynetwork.EmployeeDataModel
-import com.app.mconnect.mynetwork.EmployeeResponse
-import com.app.mconnect.mynetwork.FirebaseUtils
-import com.app.mconnect.mynetwork.getReference
+import com.app.mconnect.mynetwork.*
+import com.app.mconnect.utils.logThis
 import com.app.mconnect.utils.shortToast
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.storage.FirebaseStorage
+import com.google.gson.Gson
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.WriterException
+import com.google.zxing.qrcode.QRCodeWriter
 import com.tapadoo.alerter.Alerter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
+
 
 class AddEmployeeActivity : AppCompatActivity() {
     private var binding: ActivityAddEmployeeBinding? = null
@@ -24,8 +38,7 @@ class AddEmployeeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddEmployeeBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        database = getReference("user").push()
-
+        database = getReference("user").child("SHINJITH")
 
         /*   val mFirebaseDatabaseInstance = FirebaseFirestore.getInstance()
            val user = FirebaseAuth.getInstance().currentUser
@@ -39,8 +52,8 @@ class AddEmployeeActivity : AppCompatActivity() {
             onBackPressed()
         }
         binding?.btnSave?.setOnClickListener {
-
             validation()
+
         }
 
     }
@@ -160,22 +173,6 @@ class AddEmployeeActivity : AppCompatActivity() {
         storage: String
     ) {
 
-        // create a dummy data
-/*        val dataMap = hashMapOf<String, String>(
-            "id" to id,
-            "name" to name,
-            "dip" to dip,
-            "email" to email,
-            "monitorName" to monitorName,
-            "monitorSerialNo" to monitorSerialNo,
-            "keyboardName" to keyboardName,
-            "keyboardSerialNo" to keyboardSerialNo,
-            "mouseName" to mouseName,
-            "mouseSerialNo" to mouseSerialNo,
-            "processor" to processor,
-            "ram" to ram,
-            "storage" to storage,
-        )*/
         val data = EmployeeDataModel(
             id = id,
             name = name,
@@ -188,30 +185,119 @@ class AddEmployeeActivity : AppCompatActivity() {
             mouseName = mouseName,
             mouseSerialNo = mouseSerialNo,
             processor = processor,
-            ram = ram ,
-            storage = storage
-
-
+            ram = ram,
+            storage = storage,
         )
+        val gson = Gson()
+        val jsonString = gson.toJson(data)
+        val qrUri = qrGenerator(jsonString)
 
+        uploadImage("$id-$name-$dip", qrUri).addOnSuccessListener { downloadUri ->
+            val dataWithQr = EmployeeDataModel(
+                id = id,
+                name = name,
+                dip = dip,
+                email = email,
+                monitorName = monitorName,
+                monitorSerialNo = monitorSerialNo,
+                keyboardName = keyboardName,
+                keyboardSerialNo = keyboardSerialNo,
+                mouseName = mouseName,
+                mouseSerialNo = mouseSerialNo,
+                processor = processor,
+                ram = ram,
+                storage = storage,
+                qrUri = downloadUri.toString()
+            )
 
-        FirebaseUtils().fireStoreDatabase.collection("Users")
-            .add(data)
-            .addOnSuccessListener {
-                binding?.etId?.text?.clear()
-                shortToast("uploaded")
-                onBackPressed()
-
-
-            }
-            .addOnFailureListener {
-
-                shortToast("Failed")
-            }
-
-
+            FirebaseUtils().fireStoreDatabase.collection("Users")
+                .add(dataWithQr)
+                .addOnSuccessListener {
+                    binding?.etId?.text?.clear()
+                    shortToast("uploaded")
+                    onBackPressed()
+                }
+                .addOnFailureListener {
+                    shortToast("Failed")
+                }
+        }.addOnFailureListener {
+            logThis(it)
+        }
     }
 
+    private fun qrGenerator(data: String): Uri {
+        val writer = QRCodeWriter()
+        try {
+            val bitMatrix = writer.encode(data, BarcodeFormat.QR_CODE, 512, 512)
+            val width = bitMatrix.width
+            val height = bitMatrix.height
+            val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            for (x in 0 until width) {
+                for (y in 0 until height) {
+                    bmp.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+                }
+            }
+            //binding?.ivBack?.setImageBitmap(bmp)
+            return saveMediaToStorage(bmp)
+        } catch (e: WriterException) {
+            e.printStackTrace()
+        }
+        return Uri.EMPTY
+    }
+
+    private fun saveMediaToStorage(bitmap: Bitmap): Uri {
+        //Generating a file name
+        val filename = "${System.currentTimeMillis()}.jpg"
+        //Output stream
+        var fos: OutputStream? = null
+        var savedImageUri: Uri = Uri.EMPTY
+        //For devices running android >= Q
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            //getting the contentResolver
+            contentResolver?.also { resolver ->
+                //Content resolver will process the contentValues
+                val contentValues = ContentValues().apply {
+                    //putting file information in content values
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                }
+                //Inserting the contentValues to contentResolver and getting the Uri
+                val imageUri: Uri? =
+                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                savedImageUri = imageUri ?: Uri.EMPTY
+                //Opening an outputStream with the Uri that we got
+                fos = imageUri?.let { resolver.openOutputStream(it) }
+            }
+        } else {
+            //These for devices running on android < Q
+            //So I don't think an explanation is needed here
+            val imagesDir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val image = File(imagesDir, filename)
+            savedImageUri = Uri.fromFile(image)
+            fos = FileOutputStream(image)
+        }
+        fos?.use {
+            //Finally writing the bitmap to the output stream that we opened
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            shortToast("Saved to Gallery")
+        }
+        return savedImageUri
+        /* val bmp: Bitmap = drawTextToBitmap(this,R.drawable.back, "Hello Android")
+        img.setImageBitmap(bmp)*/
+    }
+
+    private fun uploadImage(imageName: String, imageFileUri: Uri): Task<Uri> {
+        val mStorageRef = FirebaseStorage.getInstance().reference
+        val uploadTask = mStorageRef.child("SHINJITH/$imageName").putFile(imageFileUri)
+        uploadTask.addOnSuccessListener {
+            shortToast("image uploaded")
+        }.addOnFailureListener {
+            shortToast("image uploaded failed")
+        }
+        return mStorageRef.child("SHINJITH").child(imageName).downloadUrl
+    }
 
     private fun showAlert(title: String, msg: String, clickMsg: String) {
         Alerter.create(this@AddEmployeeActivity)
@@ -227,7 +313,5 @@ class AddEmployeeActivity : AppCompatActivity() {
                 ).show();
             })
             .show()
-
     }
-
 }
