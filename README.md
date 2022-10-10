@@ -5,9 +5,9 @@ User can easily store the Data of employees through M connect
 also we can store the information about employees in Qr code
 
  # Screenshot
-  <img width="200" height="400" src="https://github.com/Mr-Sarath/Text2Me/blob/master/sample%20images/Screenshot_20220721_104618.jpg">
-   <img width="200" height="400" src="https://github.com/Mr-Sarath/Text2Me/blob/master/sample%20images/Screenshot_20220721_105332.jpg">
-    <img width="200" height="400" src="https://github.com/Mr-Sarath/Text2Me/blob/master/sample%20images/Screenshot_20220721_114822.jpg">
+  <img width="200" height="400" src="https://github.com/Mr-Sarath/MConnect/blob/master/sample/Screenshot_20221010_113120.jpg">
+   <img width="200" height="400" src="">
+    <img width="200" height="400" src="">
     
     
 
