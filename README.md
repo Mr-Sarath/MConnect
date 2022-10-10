@@ -6,7 +6,7 @@ also we can store the information about employees in Qr code
 
  # Screenshot
   <img width="200" height="400" src="https://github.com/Mr-Sarath/MConnect/blob/master/sample/Screenshot_20221010_113120.jpg">
-   <img width="200" height="400" src="">
+   <img width="200" height="400" src="https://github.com/Mr-Sarath/MConnect/blob/master/sample/Screenshot_20221010_120411.jpg">
     <img width="200" height="400" src="">
     
     
