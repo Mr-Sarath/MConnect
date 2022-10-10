@@ -13,6 +13,7 @@ also we can store the information about employees in Qr code
     <img width="200" height="400" src="https://github.com/Mr-Sarath/MConnect/blob/master/sample/Screenshot_20221010_120427.jpg">
     <img width="200" height="400" src="https://github.com/Mr-Sarath/MConnect/blob/master/sample/Screenshot_20221010_120433.jpg">
         <img width="200" height="400" src="https://github.com/Mr-Sarath/MConnect/blob/master/sample/Screenshot_20221010_120442.jpg">
+        <img width="200" height="400" src="https://github.com/Mr-Sarath/MConnect/blob/master/sample/Screenshot_20221010_120454.jpg">
 
 
    
